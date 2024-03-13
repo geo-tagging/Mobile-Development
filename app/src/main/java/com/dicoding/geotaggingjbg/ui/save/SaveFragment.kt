@@ -44,7 +44,7 @@ class SaveFragment : Fragment() {
         binding.btSimpan.setOnClickListener {
             val data = Entity(image = EXTRA_FILE)
             viewModel.saveImageLocal(data)
-            showToast("Data telah berhasil disimpan")
+            showToast("Data telah berhasil disimpan!")
             it.findNavController().navigate(R.id.action_navigation_save_to_navigation_home)
         }
     }
