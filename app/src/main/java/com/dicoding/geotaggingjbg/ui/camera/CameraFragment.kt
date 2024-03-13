@@ -33,6 +33,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.dicoding.geotaggingjbg.R
 import com.dicoding.geotaggingjbg.ViewModelFactory
+import com.dicoding.geotaggingjbg.data.database.Entity
 import com.dicoding.geotaggingjbg.ui.save.SaveFragment
 import com.dicoding.geotaggingjbg.ui.utils.ResultState
 import com.dicoding.geotaggingjbg.ui.utils.createCustomTempFile
@@ -161,10 +162,13 @@ class CameraFragment() : Fragment() {
             ContextCompat.getMainExecutor(requireActivity()),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-
-                    val imageUri = output.savedUri.toString()
+//                    val imageUri = output.savedUri.toString()
+//                    val bundle = Bundle().apply {
+//                        putString(SaveFragment.EXTRA_FILE, imageUri)
+//                    }
+                    val imageUri = output.savedUri?: Uri.fromFile(photoFile)
                     val bundle = Bundle().apply {
-                        putString(SaveFragment.EXTRA_FILE, imageUri)
+                        putString(SaveFragment.EXTRA_FILE, imageUri.toString())
                     }
                     showFragment(bundle)
                 }

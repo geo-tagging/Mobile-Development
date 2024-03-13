@@ -26,15 +26,6 @@ abstract class AppDatabase : RoomDatabase() {
                 }
             }
             return  INSTANCE as AppDatabase
-//            return INSTANCE ?: synchronized(this) {
-//                val instance = Room.databaseBuilder(
-//                    application,
-//                    AppDatabase::class.java,
-//                    "app_database"
-//                ).build()
-//                INSTANCE = instance
-//                instance
-//            }
         }
     }
 }
