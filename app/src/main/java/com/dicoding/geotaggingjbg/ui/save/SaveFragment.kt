@@ -42,11 +42,6 @@ class SaveFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
         binding.btSimpan.setOnClickListener {
-            //yg ada dihapus, trus diisi buat upload room (insert)
-            //toast + pindah ke cam
-//            val option = "Image Save"
-//            optionDialogListener?.onOptionChosen(option, currentImageUri.toString())
-//            requireActivity().supportFragmentManager.popBackStack()
             val data = Entity(image = EXTRA_FILE)
             viewModel.saveImageLocal(data)
             showToast("Data telah disimpan")

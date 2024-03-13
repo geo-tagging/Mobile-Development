@@ -23,7 +23,7 @@ class Repository(
         return dao.getAllImages()
     }
 
-    fun saveImageToLocal(entity: Entity){
+    suspend fun saveImageToLocal(entity: Entity){
         dao.upsertImage(entity)
     }
 

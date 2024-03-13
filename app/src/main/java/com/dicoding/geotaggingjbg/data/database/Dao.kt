@@ -8,7 +8,7 @@ import androidx.room.Upsert
 @Dao
 interface Dao {
     @Upsert
-    fun upsertImage(entity: Entity)
+    suspend fun upsertImage(entity: Entity)
 
     @Query("SELECT * FROM geo_db")
     fun getAllImages(): LiveData<List<Entity>>
