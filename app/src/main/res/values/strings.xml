@@ -1,0 +1,145 @@
+<resources>
+    <string name="app_name">Geo Tagging JBG</string>
+    <string name="title_home">Home</string>
+    <string name="title_camera">Camera</string>
+    <string name="title_maps">Maps</string>
+    <string name="title_save">Save</string>
+
+    <string name="cam_capture">Capture Photo</string>
+    <string name="bt_simpan">Simpan</string>
+    <string name="bt_batal">Batal</string>
+
+    <string name="form_title">Lengkapi data dibawah!</string>
+    <string name="form_jentan">Jenis Tanaman</string>
+    <string name="form_lokasi">Lokasi Tanaman</string>
+    <string name="form_tahun">Tahun Tanam</string>
+    <string name="form_kegiatan">Kegiatan</string>
+    <string name="form_sk">SK PPKH</string>
+    <string name="desc_iv">Preview Image</string>
+
+    <string name="data_none">Seluruh data sudah di unggah</string>
+
+    <string-array name="array_jentan">
+        <item>Akasia</item>
+        <item>Alaban</item>
+        <item>Alpukat</item>
+        <item>Ambaratan</item>
+        <item>Angsana</item>
+        <item>Asam Jawa</item>
+        <item>Cempedak</item>
+        <item>Jabon</item>
+        <item>Jarak</item>
+        <item>Kangkung Liar</item>
+        <item>Karamunting</item>
+        <item>Kasturi</item>
+        <item>Kayu Kuku</item>
+        <item>Kayu Manis</item>
+        <item>Kayu Putih</item>
+        <item>Kelapa</item>
+        <item>Kemiri</item>
+        <item>Kersen</item>
+        <item>Keruing</item>
+        <item>Lamtoro</item>
+        <item>Langsat</item>
+        <item>Lengkeng</item>
+        <item>Mahang</item>
+        <item>Mahoni</item>
+        <item>Mallotus</item>
+        <item>Matoa</item>
+        <item>Meranti</item>
+        <item>Nangka</item>
+        <item>Pasak Bumi</item>
+        <item>Petai</item>
+        <item>Pulai</item>
+        <item>Ramania</item>
+        <item>Rambai</item>
+        <item>Rotan</item>
+        <item>Rumput Vetiver</item>
+        <item>Sengon</item>
+        <item>Sengon buto</item>
+        <item>Sepatudea</item>
+        <item>Sereh Wangi</item>
+        <item>Sirsak</item>
+        <item>Srikaya</item>
+        <item>Sungkai</item>
+        <item>Tanjung</item>
+        <item>Tembesu</item>
+        <item>Tengkawang</item>
+        <item>Trembesi</item>
+        <item>Turi</item>
+        <item>Ulin</item>
+        <item>Waru laut</item>
+        <item>Ylang-ylang</item>
+    </string-array>
+
+    <string-array name="array_lokasi">
+        <item>Body River Katal-katal</item>
+        <item>M1E</item>
+        <item>M1EE</item>
+        <item>M1EW</item>
+        <item>M1W</item>
+        <item>M2EE</item>
+        <item>M2W</item>
+        <item>M23 Nhy</item>
+        <item>M23E</item>
+        <item>M23E Nhy</item>
+        <item>M23EC</item>
+        <item>M23EE</item>
+        <item>M23EW</item>
+        <item>M4 Nhy</item>
+        <item>M45C</item>
+        <item>M4E</item>
+        <item>M4EC</item>
+        <item>M4EW</item>
+        <item>M4W</item>
+        <item>M5E</item>
+        <item>Reservoir PT BAS</item>
+        <item>Sediment Pond UW</item>
+        <item>U210</item>
+        <item>UCW</item>
+        <item>UCE</item>
+        <item>UE</item>
+        <item>UEC</item>
+        <item>UW</item>
+    </string-array>
+
+    <string-array name="array_tahun">
+        <item>2005</item>
+        <item>2006</item>
+        <item>2007</item>
+        <item>2008</item>
+        <item>2009</item>
+        <item>2010</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+    </string-array>
+
+    <string-array name="array_kegiatan">
+        <item>Tanaman Baru</item>
+        <item>Sulaman</item>
+        <item>Sisipam</item>
+    </string-array>
+
+    <string-array name="array_sk">
+        <item>671</item>
+        <item>1080</item>
+        <item>APL</item>
+    </string-array>
+    <string name="title_activity_detail">DetailActivity</string>
+</resources>
