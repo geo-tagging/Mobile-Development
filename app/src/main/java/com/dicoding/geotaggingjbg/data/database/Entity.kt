@@ -8,6 +8,22 @@ import androidx.room.PrimaryKey
 data class Entity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    @ColumnInfo(name = "imagePath")
-    val image: String? = null
+    @ColumnInfo(name = "image")
+    val image: String? = null,
+    @ColumnInfo(name = "longitude")
+    var longitude: String? = null,
+    @ColumnInfo(name = "latitude")
+    var latitude: String? = null,
+    @ColumnInfo(name = "elevasi")
+    var elevasi: String? = null,
+    @ColumnInfo(name = "jenTan")
+    var jenTan: String? = null,
+    @ColumnInfo(name = "lokasi")
+    var lokasi: String? = null,
+    @ColumnInfo(name = "tanggal")
+    var tanggal: String? = null,
+    @ColumnInfo(name = "kegiatan")
+    var kegiatan: String? = null,
+    @ColumnInfo(name = "sk")
+    var sk: String? = null
 )
