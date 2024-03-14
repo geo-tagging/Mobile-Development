@@ -21,126 +21,99 @@
     <string name="data_none">Seluruh data sudah di unggah</string>
 
     <string-array name="array_jentan">
-        <item>Akasia</item>
-        <item>Alaban</item>
-        <item>Alpukat</item>
-        <item>Ambaratan</item>
-        <item>Angsana</item>
-        <item>Asam Jawa</item>
-        <item>Cempedak</item>
-        <item>Jabon</item>
-        <item>Jarak</item>
-        <item>Kangkung Liar</item>
-        <item>Karamunting</item>
-        <item>Kasturi</item>
-        <item>Kayu Kuku</item>
-        <item>Kayu Manis</item>
-        <item>Kayu Putih</item>
-        <item>Kelapa</item>
-        <item>Kemiri</item>
-        <item>Kersen</item>
-        <item>Keruing</item>
-        <item>Lamtoro</item>
-        <item>Langsat</item>
-        <item>Lengkeng</item>
-        <item>Mahang</item>
-        <item>Mahoni</item>
-        <item>Mallotus</item>
-        <item>Matoa</item>
-        <item>Meranti</item>
-        <item>Nangka</item>
-        <item>Pasak Bumi</item>
-        <item>Petai</item>
-        <item>Pulai</item>
-        <item>Ramania</item>
-        <item>Rambai</item>
-        <item>Rotan</item>
-        <item>Rumput Vetiver</item>
-        <item>Sengon</item>
-        <item>Sengon buto</item>
-        <item>Sepatudea</item>
-        <item>Sereh Wangi</item>
-        <item>Sirsak</item>
-        <item>Srikaya</item>
-        <item>Sungkai</item>
-        <item>Tanjung</item>
-        <item>Tembesu</item>
-        <item>Tengkawang</item>
-        <item>Trembesi</item>
-        <item>Turi</item>
-        <item>Ulin</item>
-        <item>Waru laut</item>
-        <item>Ylang-ylang</item>
+        <item>1, Alaban</item>
+        <item>2, Ambaratan</item>
+        <item>3, Asam Jawa</item>
+        <item>4. Cempedak</item>
+        <item>5, Jabon</item>
+        <item>6, Kangkung Liar</item>
+        <item>7, Karamunting</item>
+        <item>8, Kasturi</item>
+        <item>9, Kayu Kuku</item>
+        <item>10, Kayu Manis</item>
+        <item>11, Kayu Putih</item>
+        <item>12, Kelapa</item>
+        <item>13, Kemiri</item>
+        <item>14, Kersen</item>
+        <item>15, Keruing</item>
+        <item>16, Lamtoro</item>
+        <item>17, Langsat</item>
+        <item>18, Lengkeng</item>
+        <item>19, Mahang</item>
+        <item>20, Mallotus</item>
+        <item>21, Matoa</item>
+        <item>22, Meranti</item>
+        <item>23, Nangka</item>
+        <item>24, Pasak Bumi</item>
+        <item>25, Petai</item>
+        <item>26, Pulai</item>
+        <item>27, Ramania</item>
+        <item>28, Rambai</item>
+        <item>29, Rotan</item>
+        <item>30, Srikaya</item>
+        <item>31, Sungkai</item>
+        <item>32, Tanjung</item>
+        <item>33, Tembesu</item>
+        <item>34, Tengkawang</item>
+        <item>35, Ulin</item>
+        <item>36, Waru laut</item>
+        <item>37, Ylang-ylang</item>
+        <item>38, Akasia</item>
+        <item>39, Alpukat</item>
+        <item>40, Angsana</item>
+        <item>41, Jarak</item>
+        <item>42, Mahoni</item>
+        <item>43, Rumput Vetiver</item>
+        <item>44, Sengon</item>
+        <item>45, Sengon buto</item>
+        <item>46, Sepatudea</item>
+        <item>47, Sereh Wangi</item>
+        <item>48, Sirsak</item>
+        <item>49, Trembesi</item>
+        <item>50, Turi</item>
     </string-array>
 
     <string-array name="array_lokasi">
-        <item>Body River Katal-katal</item>
-        <item>M1E</item>
-        <item>M1EE</item>
-        <item>M1EW</item>
-        <item>M1W</item>
-        <item>M2EE</item>
-        <item>M2W</item>
-        <item>M23 Nhy</item>
-        <item>M23E</item>
-        <item>M23E Nhy</item>
-        <item>M23EC</item>
-        <item>M23EE</item>
-        <item>M23EW</item>
-        <item>M4 Nhy</item>
-        <item>M45C</item>
-        <item>M4E</item>
-        <item>M4EC</item>
-        <item>M4EW</item>
-        <item>M4W</item>
-        <item>M5E</item>
-        <item>Reservoir PT BAS</item>
-        <item>Sediment Pond UW</item>
-        <item>U210</item>
-        <item>UCW</item>
-        <item>UCE</item>
-        <item>UE</item>
-        <item>UEC</item>
-        <item>UW</item>
-    </string-array>
-
-    <string-array name="array_tahun">
-        <item>2005</item>
-        <item>2006</item>
-        <item>2007</item>
-        <item>2008</item>
-        <item>2009</item>
-        <item>2010</item>
-        <item>2011</item>
-        <item>2012</item>
-        <item>2013</item>
-        <item>2014</item>
-        <item>2015</item>
-        <item>2016</item>
-        <item>2017</item>
-        <item>2018</item>
-        <item>2019</item>
-        <item>2020</item>
-        <item>2021</item>
-        <item>2022</item>
-        <item>2023</item>
-        <item>2024</item>
-        <item>2025</item>
-        <item>2026</item>
-        <item>2027</item>
-        <item>2028</item>
+        <item>1, Body River Katal-katal</item>
+        <item>2, M1E</item>
+        <item>3, M1EE</item>
+        <item>4, M1EW</item>
+        <item>5, M1W</item>
+        <item>6, M2EE</item>
+        <item>7, M2W</item>
+        <item>8, M23 Nhy</item>
+        <item>9, M23E</item>
+        <item>10, M23E Nhy</item>
+        <item>11, M23EC</item>
+        <item>12, M23EE</item>
+        <item>13, M23EW</item>
+        <item>14, M4 Nhy</item>
+        <item>15, M45C</item>
+        <item>16, M4E</item>
+        <item>17, M4EC</item>
+        <item>18, M4EW</item>
+        <item>19, M4W</item>
+        <item>20, M5E</item>
+        <item>21, Reservoir PT BAS</item>
+        <item>22, Sediment Pond UW</item>
+        <item>23, U210</item>
+        <item>24, UCE</item>
+        <item>25, UCW</item>
+        <item>26, UE</item>
+        <item>27, UEC</item>
+        <item>28, UW</item>
     </string-array>
 
     <string-array name="array_kegiatan">
-        <item>Tanaman Baru</item>
-        <item>Sulaman</item>
-        <item>Sisipam</item>
+        <item>1, Tanaman Baru</item>
+        <item>2, Sulaman</item>
+        <item>3, Sisipam</item>
     </string-array>
 
     <string-array name="array_sk">
-        <item>671</item>
-        <item>1080</item>
-        <item>APL</item>
+        <item>1, 671</item>
+        <item>2, 1080</item>
+        <item>3, APL</item>
     </string-array>
     <string name="title_activity_detail">DetailActivity</string>
 </resources>
