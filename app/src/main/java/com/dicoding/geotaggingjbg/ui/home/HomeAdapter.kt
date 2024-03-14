@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.dicoding.geotaggingjbg.R
 import com.dicoding.geotaggingjbg.data.database.Entity
 import com.dicoding.geotaggingjbg.databinding.ItemDataBinding
 
@@ -33,7 +34,17 @@ class HomeAdapter : ListAdapter<Entity, HomeAdapter.MyViewHolder>(DIFF_CALLBACK)
             Glide.with(binding.root.context)
                 .load(data.image)
                 .into(binding.ivImage)
-            binding.tvJentan.text = data.jenTan.toString()
+            val jenTanId = data.jenTan
+            val jenTanArray = binding.root.context.resources.getStringArray(R.array.array_jentan)
+            var jenTanValue = ""
+            for (item in jenTanArray) {
+                val parts = item.split(", ")
+                if (parts[0].toInt() == jenTanId) {
+                    jenTanValue = parts[1]
+                    break
+                }
+            }
+            binding.tvJentan.text = jenTanValue
             binding.tvTanggal.text = data.tanggal
         }
     }
