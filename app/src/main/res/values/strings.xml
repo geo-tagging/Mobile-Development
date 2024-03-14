@@ -27,7 +27,7 @@
         <item>1, Alaban</item>
         <item>2, Ambaratan</item>
         <item>3, Asam Jawa</item>
-        <item>4. Cempedak</item>
+        <item>4, Cempedak</item>
         <item>5, Jabon</item>
         <item>6, Kangkung Liar</item>
         <item>7, Karamunting</item>
@@ -110,7 +110,7 @@
     <string-array name="array_kegiatan">
         <item>1, Tanaman Baru</item>
         <item>2, Sulaman</item>
-        <item>3, Sisipam</item>
+        <item>3, Sisipan</item>
     </string-array>
 
     <string-array name="array_sk">
