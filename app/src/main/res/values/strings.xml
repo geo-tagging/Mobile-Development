@@ -11,6 +11,9 @@
     <string name="bt_hapus">Hapus</string>
 
     <string name="form_title">Lengkapi data dibawah!</string>
+    <string name="form_long">Longitude</string>
+    <string name="form_lat">Latitude</string>
+    <string name="form_elev">Elevasi</string>
     <string name="form_jentan">Jenis Tanaman</string>
     <string name="form_lokasi">Lokasi Tanaman</string>
     <string name="form_tahun">Tahun Tanam</string>
