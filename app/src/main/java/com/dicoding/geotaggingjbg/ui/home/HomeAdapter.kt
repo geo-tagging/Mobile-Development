@@ -33,7 +33,8 @@ class HomeAdapter : ListAdapter<Entity, HomeAdapter.MyViewHolder>(DIFF_CALLBACK)
             Glide.with(binding.root.context)
                 .load(data.image)
                 .into(binding.ivImage)
-//            binding.tvItem.text = data.username
+            binding.tvJentan.text = data.jenTan.toString()
+            binding.tvTanggal.text = data.tanggal
         }
     }
     companion object {
