@@ -18,13 +18,13 @@ data class Entity(
     @ColumnInfo(name = "elevasi")
     var elevasi: String? = null,
     @ColumnInfo(name = "jenTan")
-    var jenTan: Int,
+    var jenTan: Int = 0,
     @ColumnInfo(name = "lokasi")
-    var lokasi: Int,
+    var lokasi: Int = 0,
     @ColumnInfo(name = "tanggal")
-    var tanggal: Date,
+    var tanggal: String? = null,
     @ColumnInfo(name = "kegiatan")
-    var kegiatan: Int,
+    var kegiatan: Int = 0,
     @ColumnInfo(name = "sk")
-    var sk: Int
+    var sk: Int = 0
 )
