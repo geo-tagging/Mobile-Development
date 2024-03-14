@@ -32,7 +32,7 @@ class HomeAdapter : ListAdapter<Entity, HomeAdapter.MyViewHolder>(DIFF_CALLBACK)
         fun bind(data: Entity){
             Glide.with(binding.root.context)
                 .load(data.image)
-                .into(binding.image)
+                .into(binding.ivImage)
 //            binding.tvItem.text = data.username
         }
     }

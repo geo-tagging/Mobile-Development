@@ -8,26 +8,40 @@
     android:layout_gravity="center"
     android:padding="16dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/image"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@tools:sample/avatars"
+        android:contentDescription="Image" />
 
     <TextView
-        android:id="@+id/tvItem"
+        android:id="@+id/tvJentan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/image"
+        android:gravity="start"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvTanggal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toTopOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@+id/ivImage"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="User" />
+
+    <TextView
+        android:id="@+id/tvTanggal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvJentan"
+        app:layout_constraintTop_toBottomOf="@id/tvJentan"
+        tools:text="Tanggal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

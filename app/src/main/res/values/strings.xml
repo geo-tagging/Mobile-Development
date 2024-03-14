@@ -8,6 +8,7 @@
     <string name="cam_capture">Capture Photo</string>
     <string name="bt_simpan">Simpan</string>
     <string name="bt_batal">Batal</string>
+    <string name="bt_hapus">Hapus</string>
 
     <string name="form_title">Lengkapi data dibawah!</string>
     <string name="form_jentan">Jenis Tanaman</string>
