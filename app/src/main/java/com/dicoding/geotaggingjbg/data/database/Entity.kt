@@ -3,6 +3,7 @@ package com.dicoding.geotaggingjbg.data.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.sql.Date
 
 @Entity(tableName = "geo_db")
 data class Entity(
@@ -17,13 +18,13 @@ data class Entity(
     @ColumnInfo(name = "elevasi")
     var elevasi: String? = null,
     @ColumnInfo(name = "jenTan")
-    var jenTan: String? = null,
+    var jenTan: Int,
     @ColumnInfo(name = "lokasi")
-    var lokasi: String? = null,
+    var lokasi: Int,
     @ColumnInfo(name = "tanggal")
-    var tanggal: String? = null,
+    var tanggal: Date,
     @ColumnInfo(name = "kegiatan")
-    var kegiatan: String? = null,
+    var kegiatan: Int,
     @ColumnInfo(name = "sk")
-    var sk: String? = null
+    var sk: Int
 )
