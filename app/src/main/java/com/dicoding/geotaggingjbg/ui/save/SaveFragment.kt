@@ -69,16 +69,31 @@ class SaveFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
         binding.btSimpan.setOnClickListener {
-            val data = Entity(
-                image = currentImageUri.toString(),
-                jenTan = binding.spinJentan.selectedItemId.toInt()+1,
-                lokasi = binding.spinLokasi.selectedItemId.toInt()+1,
-                kegiatan = binding.spinKegiatan.selectedItemId.toInt()+1,
-                sk = binding.spinSk.selectedItemId.toInt()+1
-            )
-            viewModel.saveImageLocal(data)
-            showToast("Data telah berhasil disimpan!")
-            it.findNavController().navigate(R.id.action_navigation_save_to_navigation_home)
+            val longText = binding.etLong.text.toString()
+            val langText = binding.etLang.text.toString()
+            val elevText = binding.etElev.text.toString()
+
+            val selectedJenis = binding.spinJentan.selectedItem.toString()
+            val selectedLokasi = binding.spinLokasi.selectedItem.toString()
+            val selectedKegiatan = binding.spinKegiatan.selectedItem.toString()
+            val selectedSk = binding.spinSk.selectedItem.toString()
+
+            if (longText.isNotEmpty() && langText.isNotEmpty() && elevText.isNotEmpty() &&
+                selectedJenis.isNotEmpty() && selectedLokasi.isNotEmpty() &&
+                selectedKegiatan.isNotEmpty() && selectedSk.isNotEmpty()) {
+                val data = Entity(
+                    image = currentImageUri.toString(),
+                    jenTan = binding.spinJentan.selectedItemId.toInt()+1,
+                    lokasi = binding.spinLokasi.selectedItemId.toInt()+1,
+                    kegiatan = binding.spinKegiatan.selectedItemId.toInt()+1,
+                    sk = binding.spinSk.selectedItemId.toInt()+1
+                )
+                viewModel.saveImageLocal(data)
+                showToast("Data telah berhasil disimpan!")
+                it.findNavController().navigate(R.id.action_navigation_save_to_navigation_home)
+            } else{
+              showToast("Harap isi semua data")
+            }
         }
     }
 
