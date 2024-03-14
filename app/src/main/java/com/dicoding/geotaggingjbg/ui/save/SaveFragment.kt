@@ -16,12 +16,15 @@ import com.dicoding.geotaggingjbg.R
 import com.dicoding.geotaggingjbg.ViewModelFactory
 import com.dicoding.geotaggingjbg.data.database.Entity
 import com.dicoding.geotaggingjbg.databinding.FragmentSaveBinding
+import java.util.Calendar
 
 class SaveFragment : Fragment() {
 
     private var _binding: FragmentSaveBinding? = null
     private val binding get() = _binding!!
     private var currentImageUri: Uri? = null
+    private var currentDate: String= ""
+    private var currentTime: String= ""
 
     private lateinit var spinnerItemJenis: Array<String>
     private lateinit var spinnerItemLokasi: Array<String>
@@ -59,6 +62,15 @@ class SaveFragment : Fragment() {
         val adapterSk = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, spinnerIdSk)
         binding.spinSk.adapter = adapterSk
 
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH)+1
+        val year = calendar.get(Calendar.YEAR)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+        currentDate = "$day-$month-$year"
+        currentTime = "$hour-$minute"
+
         val factory: SaveViewModelFactory = SaveViewModelFactory.getInstance(requireContext().applicationContext)
         val viewModel: SaveViewModel by viewModels { factory }
         if (arguments != null) {
@@ -83,6 +95,7 @@ class SaveFragment : Fragment() {
                 selectedKegiatan.isNotEmpty() && selectedSk.isNotEmpty()) {
                 val data = Entity(
                     image = currentImageUri.toString(),
+                    tanggal = currentDate,
                     jenTan = binding.spinJentan.selectedItemId.toInt()+1,
                     lokasi = binding.spinLokasi.selectedItemId.toInt()+1,
                     kegiatan = binding.spinKegiatan.selectedItemId.toInt()+1,
