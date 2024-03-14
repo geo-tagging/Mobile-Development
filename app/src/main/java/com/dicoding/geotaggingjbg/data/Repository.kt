@@ -27,21 +27,21 @@ class Repository(
         dao.upsertImage(entity)
     }
 
-    fun uploadObjectImage(picture: File) = liveData {
-        emit(ResultState.Loading)
-        val requestImageFile = picture.asRequestBody("image/jpeg".toMediaType())
-        val multipartBody = MultipartBody.Part.createFormData(
-            "picture", picture.name, requestImageFile
-        )
-        try {
-            val successResponse = apiService.uploadImageObject(multipartBody)
-            emit(ResultState.Success(successResponse))
-        } catch (e: HttpException) {
-            val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, Response::class.java)
-            emit(ResultState.Error(errorResponse.message))
-        }
-    }
+//    fun uploadObjectImage(picture: File) = liveData {
+//        emit(ResultState.Loading)
+//        val requestImageFile = picture.asRequestBody("image/jpeg".toMediaType())
+//        val multipartBody = MultipartBody.Part.createFormData(
+//            "picture", picture.name, requestImageFile
+//        )
+//        try {
+//            val successResponse = apiService.uploadImageObject(multipartBody)
+//            emit(ResultState.Success(successResponse))
+//        } catch (e: HttpException) {
+//            val errorBody = e.response()?.errorBody()?.string()
+//            val errorResponse = Gson().fromJson(errorBody, Response::class.java)
+//            emit(ResultState.Error(errorResponse.message))
+//        }
+//    }
 
     companion object {
         @Volatile
