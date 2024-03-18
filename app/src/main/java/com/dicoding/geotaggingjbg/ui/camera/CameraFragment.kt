@@ -11,8 +11,7 @@ import androidx.fragment.app.Fragment
 import com.dicoding.geotaggingjbg.databinding.FragmentCameraBinding
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues.TAG
-import android.content.Context
+import android.location.Location
 import android.os.Build
 import android.util.Log
 import android.view.OrientationEventListener
@@ -27,20 +26,18 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.dicoding.geotaggingjbg.R
 import com.dicoding.geotaggingjbg.ViewModelFactory
-import com.dicoding.geotaggingjbg.data.database.Entity
 import com.dicoding.geotaggingjbg.ui.save.SaveFragment
-import com.dicoding.geotaggingjbg.ui.utils.ResultState
 import com.dicoding.geotaggingjbg.ui.utils.createCustomTempFile
 import com.dicoding.geotaggingjbg.ui.utils.reduceFileImage
 import com.dicoding.geotaggingjbg.ui.utils.uriToFile
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import id.zelory.compressor.Compressor
-import kotlinx.coroutines.launch
+
 
 class CameraFragment() : Fragment() {
 
@@ -60,9 +57,11 @@ class CameraFragment() : Fragment() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Toast.makeText(requireActivity(), "Permission request granted", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), "Permission request granted", Toast.LENGTH_LONG)
+                    .show()
             } else {
-                Toast.makeText(requireActivity(), "Permission request denied", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), "Permission request denied", Toast.LENGTH_LONG)
+                    .show()
             }
         }
 
@@ -87,7 +86,6 @@ class CameraFragment() : Fragment() {
         if (!allPermissionsGranted()) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
         }
-
         binding.ivCamGallery.setOnClickListener { startGallery() }
         binding.ivCamCapture.setOnClickListener { takePhoto() }
         binding.ivCamClose.setOnClickListener {
@@ -153,6 +151,51 @@ class CameraFragment() : Fragment() {
     }
 
     private fun takePhoto() {
+        if (allPermissionsGranted()) {
+            // Mendapatkan lokasi pengguna
+            getLocation()
+        } else {
+            // Meminta izin lokasi jika belum diberikan
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun getLocation() {
+        val fusedLocationClient: FusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission granted, proceed to fetch the last known location
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    // Handle the location result
+                    if (location != null) {
+                        val latitude = location.latitude
+                        val longitude = location.longitude
+                        val elevation = location.altitude
+
+                        // Proceed with image capture and saving
+                        takePictureWithLocation(latitude, longitude, elevation)
+                    } else {
+                        // Handle case where location is null
+                        showToast("Failed to retrieve location")
+                    }
+                }
+            .addOnFailureListener { e ->
+                // Gagal mendapatkan lokasi
+                showToast("Failed to retrieve location: ${e.message}")
+            }
+        } else {
+            // Permission not granted, request the permission from the user
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun takePictureWithLocation(latitude: Double, longitude: Double, elevation: Double) {
         val imageCapture = imageCapture ?: return
         val photoFile = createCustomTempFile(requireActivity())
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
@@ -162,34 +205,61 @@ class CameraFragment() : Fragment() {
             ContextCompat.getMainExecutor(requireActivity()),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-//                    val imageUri = output.savedUri.toString()
-//                    val bundle = Bundle().apply {
-//                        putString(SaveFragment.EXTRA_FILE, imageUri)
-//                    }
-                    val imageUri = output.savedUri?: Uri.fromFile(photoFile)
+                    val imageUri = output.savedUri ?: Uri.fromFile(photoFile)
+
+                    // Simpan gambar bersama dengan data lokasi
                     val bundle = Bundle().apply {
                         putString(SaveFragment.EXTRA_FILE, imageUri.toString())
+                        putDouble("latitude", latitude)
+                        putDouble("longitude", longitude)
+                        putDouble("elevation", elevation)
                     }
                     showFragment(bundle)
                 }
 
                 override fun onError(exc: ImageCaptureException) {
-                    Toast.makeText(
-                        requireActivity(),
-                        "Gagal mengambil gambar.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast("Failed to capture image")
                     Log.e(TAG, "onError: ${exc.message}")
                 }
             }
         )
     }
 
+//    private fun takePhoto() {
+//        val imageCapture = imageCapture ?: return
+//        val photoFile = createCustomTempFile(requireActivity())
+//        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+//
+//        imageCapture.takePicture(
+//            outputOptions,
+//            ContextCompat.getMainExecutor(requireActivity()),
+//            object : ImageCapture.OnImageSavedCallback {
+//                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+//                    val imageUri = output.savedUri ?: Uri.fromFile(photoFile)
+//                    val bundle = Bundle().apply {
+//                        putString(SaveFragment.EXTRA_FILE, imageUri.toString())
+//                    }
+//                    showFragment(bundle)
+//                }
+//
+//                override fun onError(exc: ImageCaptureException) {
+//                    Toast.makeText(
+//                        requireActivity(),
+//                        "Gagal mengambil gambar.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    Log.e(TAG, "onError: ${exc.message}")
+//                }
+//            }
+//        )
+//    }
+
     fun showFragment(bundle: Bundle) {
         val saveFragment = SaveFragment()
         saveFragment.arguments = bundle
 
-        requireView().findNavController().navigate(R.id.action_navigation_camera_to_navigation_save, bundle)
+        requireView().findNavController()
+            .navigate(R.id.action_navigation_camera_to_navigation_save, bundle)
     }
 
     private val orientationEventListener by lazy {

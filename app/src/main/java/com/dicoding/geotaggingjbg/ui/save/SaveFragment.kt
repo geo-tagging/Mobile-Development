@@ -71,6 +71,21 @@ class SaveFragment : Fragment() {
         currentDate = "$day-$month-$year"
         currentTime = "$hour-$minute"
 
+        if (arguments != null) {
+            currentImageUri = arguments?.getString(EXTRA_FILE)!!.toUri()
+            binding.cvImagePreview.setImageURI(currentImageUri)
+
+            // Mendapatkan data longitude, latitude, dan elevasi dari Bundle
+            val easting = arguments?.getDouble("latitude", 0.0)
+            val northing = arguments?.getDouble("longitude", 0.0)
+            val elevation = arguments?.getDouble("elevation", 0.0)
+
+            // Menampilkan data longitude, latitude, dan elevasi di EditText yang sesuai
+            binding.etLong.setText(easting.toString())
+            binding.etLat.setText(northing.toString())
+            binding.etElev.setText(elevation.toString())
+        }
+
         val factory: SaveViewModelFactory = SaveViewModelFactory.getInstance(requireContext().applicationContext)
         val viewModel: SaveViewModel by viewModels { factory }
         if (arguments != null) {
@@ -82,7 +97,7 @@ class SaveFragment : Fragment() {
         }
         binding.btSimpan.setOnClickListener {
             val longText = binding.etLong.text.toString()
-            val langText = binding.etLang.text.toString()
+            val langText = binding.etLat.text.toString()
             val elevText = binding.etElev.text.toString()
 
             val selectedJenis = binding.spinJentan.selectedItem.toString()
