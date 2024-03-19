@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.dicoding.geotaggingjbg.databinding.FragmentCameraBinding
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.location.Location
 import android.os.Build
 import android.util.Log
@@ -182,16 +183,57 @@ class CameraFragment() : Fragment() {
                         takePictureWithLocation(latitude, longitude, elevation)
                     } else {
                         // Handle case where location is null
-                        showToast("Failed to retrieve location")
+                        showToast("Gagal mendapatkan lokasi. Menggunakan data lokasi terakhir diketahui.")
+                        val lastKnownLocation = getLastKnownLocationFromCache()
+                        if (lastKnownLocation != null) {
+                            takePictureWithLocation(
+                                lastKnownLocation.latitude,
+                                lastKnownLocation.longitude,
+                                lastKnownLocation.altitude
+                            )
+                        } else {
+                            showToast("Gagal mendapatkan lokasi")
+                        }
                     }
                 }
             .addOnFailureListener { e ->
                 // Gagal mendapatkan lokasi
                 showToast("Failed to retrieve location: ${e.message}")
+                val lastKnownLocation = getLastKnownLocationFromCache()
+                if (lastKnownLocation != null) {
+                    takePictureWithLocation(
+                        lastKnownLocation.latitude,
+                        lastKnownLocation.longitude,
+                        lastKnownLocation.altitude
+                    )
+                } else {
+                    showToast("Failed to retrieve last known location")
+                }
             }
         } else {
             // Permission not granted, request the permission from the user
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun getLastKnownLocationFromCache(): Location? {
+        // Retrieve last known location from cache
+        // Example: Use SharedPreferences or local database to store last known location
+        // Return the last known location, or null if not available
+        // Example:
+        val sharedPreferences = requireContext().getSharedPreferences("LocationCache", Context.MODE_PRIVATE)
+        val latitude = sharedPreferences.getFloat("lastLatitude", 0.0f).toDouble()
+        val longitude = sharedPreferences.getFloat("lastLongitude", 0.0f).toDouble()
+        val elevation = sharedPreferences.getFloat("lastElevation", 0.0f).toDouble()
+
+        return if (latitude != 0.0 && longitude != 0.0) {
+            Location("").apply {
+                this.latitude = latitude
+                this.longitude = longitude
+                this.altitude = elevation
+            }
+        } else {
+            null
         }
     }
 
