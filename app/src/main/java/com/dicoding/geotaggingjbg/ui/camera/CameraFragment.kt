@@ -12,8 +12,10 @@ import com.dicoding.geotaggingjbg.databinding.FragmentCameraBinding
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import android.view.OrientationEventListener
 import android.view.Surface
@@ -37,6 +39,12 @@ import com.dicoding.geotaggingjbg.ui.utils.reduceFileImage
 import com.dicoding.geotaggingjbg.ui.utils.uriToFile
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.MultiFormatReader
+import com.google.zxing.NotFoundException
+import com.google.zxing.RGBLuminanceSource
+import com.google.zxing.common.HybridBinarizer
+import com.google.zxing.integration.android.IntentIntegrator
 import id.zelory.compressor.Compressor
 
 
@@ -266,36 +274,6 @@ class CameraFragment() : Fragment() {
             }
         )
     }
-
-//    private fun takePhoto() {
-//        val imageCapture = imageCapture ?: return
-//        val photoFile = createCustomTempFile(requireActivity())
-//        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-//
-//        imageCapture.takePicture(
-//            outputOptions,
-//            ContextCompat.getMainExecutor(requireActivity()),
-//            object : ImageCapture.OnImageSavedCallback {
-//                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-//                    val imageUri = output.savedUri ?: Uri.fromFile(photoFile)
-//                    val bundle = Bundle().apply {
-//                        putString(SaveFragment.EXTRA_FILE, imageUri.toString())
-//                    }
-//                    showFragment(bundle)
-//                }
-//
-//                override fun onError(exc: ImageCaptureException) {
-//                    Toast.makeText(
-//                        requireActivity(),
-//                        "Gagal mengambil gambar.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    Log.e(TAG, "onError: ${exc.message}")
-//                }
-//            }
-//        )
-//    }
-
     fun showFragment(bundle: Bundle) {
         val saveFragment = SaveFragment()
         saveFragment.arguments = bundle
@@ -344,63 +322,6 @@ class CameraFragment() : Fragment() {
             )
         }
     }
-
-//    internal var optionDialogListener: SaveFragment.OnOptionDialogListener =
-//        object : SaveFragment.OnOptionDialogListener {
-//            override fun onOptionChosen(text: String?, image: String?) {
-//// Dipake ketempet lain
-//                currentImageUri = image!!.toUri()
-//                currentImageUri?.let { uri ->
-//                    val imageFile = uriToFile(uri, requireActivity()).reduceFileImage()
-////sampe sini
-//                    lifecycleScope.launch {
-//                        val compressedImage = Compressor.compress(requireContext(), imageFile)
-//                        Log.d("Image File", "showImage: ${imageFile.path}")
-//                        showLoading(true)
-
-//                        when (text) {
-//                            "Object Detection" -> {
-//                                viewModel.uploadObjectDetect(compressedImage)
-//                                    .observe(this@CameraFragment) { result ->
-//                                        if (result != null) {
-//                                            when (result) {
-//                                                is ResultState.Success -> {
-//                                                    showLoading(false)
-//
-//                                                    val responseBundle = Bundle().apply {
-//                                                        // Menambahkan dua list ke dalam Bundle
-//                                                        putString(ScanResultObjectFragment.EXTRA_PHOTO, image)
-//                                                        putString(ScanResultObjectFragment.EXTRA_RESULT, result.data.prediction)
-//                                                    }
-//
-//                                                    val receiverFragment = ScanResultObjectFragment()
-//                                                    receiverFragment.arguments = responseBundle
-//
-//                                                    view!!.findNavController().navigate(R.id.action_navigation_scan_to_scanResultObjectFragment, responseBundle)
-//                                                }
-//
-//                                                is ResultState.Loading -> {
-//                                                    showLoading(true)
-//                                                }
-//
-//                                                is ResultState.Error -> {
-//                                                    showLoading(false)
-//                                                    showToast("Server Error")
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                            }
-//                            else -> {
-//                                showToast("Unknown")
-//                            }
-//                        }
-//                    }
-//
-//
-//                }
-//            }
-//        }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

@@ -25,6 +25,9 @@ class SaveFragment : Fragment() {
     private var currentImageUri: Uri? = null
     private var currentDate: String= ""
     private var currentTime: String= ""
+    private var latitude: String = ""
+    private var longitude: String = ""
+    private var elevation: String = ""
 
     private lateinit var spinnerItemJenis: Array<String>
     private lateinit var spinnerItemLokasi: Array<String>
@@ -76,22 +79,19 @@ class SaveFragment : Fragment() {
             binding.cvImagePreview.setImageURI(currentImageUri)
 
             // Mendapatkan data longitude, latitude, dan elevasi dari Bundle
-            val easting = arguments?.getDouble("latitude", 0.0)
-            val northing = arguments?.getDouble("longitude", 0.0)
-            val elevation = arguments?.getDouble("elevation", 0.0)
+            latitude = arguments?.getDouble("latitude", 0.0).toString()
+            longitude = arguments?.getDouble("longitude", 0.0).toString()
+            elevation = arguments?.getDouble("elevation", 0.0).toString()
 
             // Menampilkan data longitude, latitude, dan elevasi di EditText yang sesuai
-            binding.etLong.setText(easting.toString())
-            binding.etLat.setText(northing.toString())
-            binding.etElev.setText(elevation.toString())
+            binding.etLong.setText(latitude)
+            binding.etLat.setText(longitude)
+            binding.etElev.setText(elevation)
         }
 
         val factory: SaveViewModelFactory = SaveViewModelFactory.getInstance(requireContext().applicationContext)
         val viewModel: SaveViewModel by viewModels { factory }
-        if (arguments != null) {
-            currentImageUri = arguments?.getString(EXTRA_FILE)!!.toUri()
-            binding.cvImagePreview.setImageURI(currentImageUri)
-        }
+
         binding.btBatal.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -111,6 +111,9 @@ class SaveFragment : Fragment() {
                 val data = Entity(
                     image = currentImageUri.toString(),
                     tanggal = currentDate,
+                    latitude = latitude,
+                    longitude = longitude,
+                    elevasi = elevation,
                     jenTan = binding.spinJentan.selectedItemId.toInt()+1,
                     lokasi = binding.spinLokasi.selectedItemId.toInt()+1,
                     kegiatan = binding.spinKegiatan.selectedItemId.toInt()+1,

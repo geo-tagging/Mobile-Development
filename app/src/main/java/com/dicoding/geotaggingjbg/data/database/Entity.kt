@@ -1,11 +1,14 @@
 package com.dicoding.geotaggingjbg.data.database
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.sql.Date
 
 @Entity(tableName = "geo_db")
+@Parcelize
 data class Entity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
@@ -27,4 +30,4 @@ data class Entity(
     var kegiatan: Int = 0,
     @ColumnInfo(name = "sk")
     var sk: Int = 0
-)
+) : Parcelable

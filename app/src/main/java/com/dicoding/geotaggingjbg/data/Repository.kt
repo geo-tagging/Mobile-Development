@@ -1,8 +1,10 @@
 package com.dicoding.geotaggingjbg.data
 
+import android.app.Application
 import android.media.Image
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import com.dicoding.geotaggingjbg.data.database.AppDatabase
 import com.dicoding.geotaggingjbg.data.database.Dao
 import com.dicoding.geotaggingjbg.data.database.Entity
 import com.dicoding.geotaggingjbg.data.response.Response
@@ -14,20 +16,40 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.HttpException
 import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class Repository(
-    private val dao: Dao,
-    private val apiService: ApiService
+    private var dao: Dao,
+    application: Application,
+    private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 ) {
-    fun getAllData(): LiveData<List<Entity>>{
-        return dao.getAllImages()
+    init {
+        val db = AppDatabase.getInstance(application)
+        dao = db.dao()
     }
 
-    suspend fun saveImageToLocal(entity: Entity){
-        dao.upsertImage(entity)
+    fun getAllData(): LiveData<List<Entity>> {
+        return dao.getAllData()
     }
 
-//    fun uploadObjectImage(picture: File) = liveData {
+    fun delete(entity: Entity) {
+        executorService.execute { dao.delete(entity) }
+    }
+
+    fun saveImageToLocal(entity: Entity) {
+        executorService.execute { dao.insert(entity) }
+    }
+
+    fun update(entity: Entity) {
+        executorService.execute { dao.update(entity) }
+    }
+
+    fun getById(id:Int): LiveData<Entity>{
+        return dao.getDatabyId(id)
+    }
+
+    //    fun uploadObjectImage(picture: File) = liveData {
 //        emit(ResultState.Loading)
 //        val requestImageFile = picture.asRequestBody("image/jpeg".toMediaType())
 //        val multipartBody = MultipartBody.Part.createFormData(
@@ -42,15 +64,15 @@ class Repository(
 //            emit(ResultState.Error(errorResponse.message))
 //        }
 //    }
-
     companion object {
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
-            dao : Dao,
-            apiService: ApiService
+            application: Application,
+            dao: Dao,
+            executorService: ExecutorService
         ): Repository = instance ?: synchronized(this) {
-            instance ?: Repository(dao, apiService)
+            instance ?: Repository(dao, application, executorService)
         }.also { instance = it }
     }
 }

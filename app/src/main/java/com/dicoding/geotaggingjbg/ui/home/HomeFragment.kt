@@ -2,6 +2,7 @@ package com.dicoding.geotaggingjbg.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.geotaggingjbg.ViewModelFactory
 import com.dicoding.geotaggingjbg.data.database.Entity
 import com.dicoding.geotaggingjbg.databinding.FragmentHomeBinding
 import com.dicoding.geotaggingjbg.ui.detail.DetailActivity
+import kotlin.math.log
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -40,6 +43,7 @@ class HomeFragment : Fragment() {
         binding.rvData.addItemDecoration(itemDecoration)
 
         viewModel.getData().observe(viewLifecycleOwner){data ->
+            Log.d("Get data", data.toString())
             if (data.isEmpty()) {
                 binding.tvNone.visibility = View.VISIBLE
             } else {
@@ -55,6 +59,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setViewData(userList: List<Entity>) {
+        Log.d("Set data", userList.toString())
         val adapter = HomeAdapter()
         adapter.submitList(userList)
         binding.rvData.adapter = adapter
