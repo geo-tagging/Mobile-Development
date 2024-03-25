@@ -1,6 +1,7 @@
 package com.dicoding.geotaggingjbg.data
 
 import android.app.Application
+import android.content.Context
 import android.media.Image
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -19,13 +20,11 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class Repository(
-    private var dao: Dao,
-    application: Application,
+class Repository(context: Context) {
+    private var dao: Dao
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
-) {
     init {
-        val db = AppDatabase.getInstance(application)
+        val db = AppDatabase.getInstance(context)
         dao = db.dao()
     }
 
@@ -68,11 +67,9 @@ class Repository(
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
-            application: Application,
-            dao: Dao,
-            executorService: ExecutorService
+            context: Context
         ): Repository = instance ?: synchronized(this) {
-            instance ?: Repository(dao, application, executorService)
+            instance ?: Repository(context)
         }.also { instance = it }
     }
 }

@@ -15,7 +15,7 @@ class DetailViewModel(private val repository: Repository, id: Int): ViewModel() 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-//    val getData: LiveData<Entity> = repository.getById(id)
+    val getData: LiveData<Entity> = repository.getById(id)
 
     fun getDataDetail(imagePath: String){
         viewModelScope.launch {
@@ -23,7 +23,7 @@ class DetailViewModel(private val repository: Repository, id: Int): ViewModel() 
 //            val image = repository.
         }
     }
-    fun getData(id: Int): LiveData<Entity> {
-        return repository.getById(id)
-    }
+//    fun getData(id: Int): LiveData<Entity> {
+//        return repository.getById(id)
+//    }
 }

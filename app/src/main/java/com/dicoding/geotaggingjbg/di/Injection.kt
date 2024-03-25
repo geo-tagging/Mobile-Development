@@ -13,6 +13,6 @@ object Injection {
         val dao = database.dao()
         val apiService = ApiConfig.getApiService()
         val executorService = Executors.newSingleThreadExecutor()
-        return Repository.getInstance(context.applicationContext as Application, dao, executorService)
+        return Repository.getInstance(context.applicationContext as Application)
     }
 }

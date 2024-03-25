@@ -3,6 +3,7 @@ package com.dicoding.geotaggingjbg.ui.home
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -45,11 +46,12 @@ class HomeAdapter : ListAdapter<Entity, HomeAdapter.MyViewHolder>(DIFF_CALLBACK)
 //    override fun getItemCount(): Int {
 //        return listData.size
 //    }
-    class MyViewHolder(val binding: ItemDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemDataBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Entity){
-            Glide.with(binding.root.context)
-                .load(data.image)
-                .into(binding.ivImage)
+//            Glide.with(binding.root.context)
+//                .load(data.image)
+//                .into(binding.ivImage)
+            binding.ivImage.setImageURI(data.image?.toUri())
             val jenTanId = data.jenTan
             val jenTanArray = binding.root.context.resources.getStringArray(R.array.array_jentan)
             var jenTanValue = ""
