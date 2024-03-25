@@ -1,19 +1,10 @@
 package com.dicoding.geotaggingjbg.ui.detail
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.text.Editable
-import android.util.Log
 import android.widget.ArrayAdapter
-import androidx.camera.core.processing.SurfaceProcessorNode.In
 import androidx.core.net.toUri
-import androidx.core.view.get
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.geotaggingjbg.R
 import com.dicoding.geotaggingjbg.data.database.Entity

@@ -9,5 +9,4 @@ import java.io.File
 
 class CameraViewModel(private val repository: Repository) : ViewModel() {
 
-
 }
