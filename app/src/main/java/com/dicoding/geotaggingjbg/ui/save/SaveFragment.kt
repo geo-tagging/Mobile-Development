@@ -75,7 +75,7 @@ class SaveFragment : Fragment() {
         currentTime = "$hour-$minute"
 
         if (arguments != null) {
-            currentImageUri = arguments?.getString(EXTRA_FILE)!!.toUri()
+//            currentImageUri = arguments?.getString(EXTRA_FILE)!!.toUri()
             binding.cvImagePreview.setImageURI(currentImageUri)
 
             // Mendapatkan data longitude, latitude, dan elevasi dari Bundle

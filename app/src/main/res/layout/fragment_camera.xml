@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.camera.CameraFragment">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/pv_cam_viewfinder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.camera.view.PreviewView>
-
     <View
         android:id="@+id/viewTop"
         android:layout_width="wrap_content"
@@ -21,26 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-
-    <View
-        android:id="@+id/viewBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="95dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_cam_capture"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/ic_capture"
-        app:layout_constraintBottom_toBottomOf="@id/viewBottom"
-        app:layout_constraintStart_toStartOf="@id/viewBottom"
-        app:layout_constraintEnd_toEndOf="@id/viewBottom"
-        app:layout_constraintTop_toTopOf="@id/viewBottom"
-        android:contentDescription="@string/cam_capture" />
 
     <ImageView
         android:id="@+id/iv_cam_close"
@@ -53,16 +27,34 @@
         app:layout_constraintBottom_toBottomOf="@id/viewTop"
         tools:ignore="ContentDescription" />
 
-    <ImageView
-        android:id="@+id/iv_cam_gallery"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_cam_capture"
-        app:layout_constraintEnd_toEndOf="@id/viewBottom"
-        app:layout_constraintStart_toEndOf="@+id/iv_cam_capture"
-        app:layout_constraintTop_toTopOf="@+id/iv_cam_capture"
-        android:src="@drawable/ic_gallery_placeholder"
-        tools:ignore="ContentDescription" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8"/>
+
+    <FrameLayout
+        android:id="@+id/cameraPreview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewTop">
+    </FrameLayout>
+
+    <View
+        android:id="@+id/viewBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <ProgressBar
         android:id="@+id/progressBar"

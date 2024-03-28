@@ -53,11 +53,6 @@ class CameraFragment() : Fragment() {
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<CameraViewModel> {
-        ViewModelFactory.getInstance(requireContext().applicationContext)
-    }
-
-    private var currentImageUri: Uri? = null
     private val cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private var imageCapture: ImageCapture? = null
 
@@ -94,10 +89,8 @@ class CameraFragment() : Fragment() {
 
         if (!allPermissionsGranted()) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
-
         }
         takePhoto()
-        binding.ivCamGallery.setOnClickListener { startGallery() }
         binding.ivCamClose.setOnClickListener {
             it.findNavController().navigate(R.id.action_navigation_camera_to_navigation_home)
         }
@@ -107,24 +100,6 @@ class CameraFragment() : Fragment() {
         super.onResume()
         hideSystemUI(requireActivity())
         startCameraX()
-    }
-
-    private fun startGallery() {
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-
-    private val launcherGallery = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            val imageUri = currentImageUri.toString()
-            val bundle = Bundle().apply {
-                putString(SaveFragment.EXTRA_FILE, imageUri)
-            }
-            showFragment(bundle)
-        } else {
-            Log.d("Photo Picker", "No media selected")
-        }
     }
 
     private fun startCameraX() {
@@ -179,141 +154,139 @@ class CameraFragment() : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+            // Permission granted, proceed to fetch the last known location
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
+                    // Handle the location result
                     if (location != null) {
                         val latitude = location.latitude
                         val longitude = location.longitude
                         val elevation = location.altitude
 
-                        showQRScannerWithLocation(latitude, longitude, elevation)
+                        // Proceed with image capture and saving
+                        scanQRCode(latitude, longitude, elevation)
                     } else {
-                        showToast("Gagal mendapatkan lokasi.")
+                        // Handle case where location is null
+                        showToast("Gagal mendapatkan lokasi. Menggunakan data lokasi terakhir diketahui.")
+                        val lastKnownLocation = getLastKnownLocationFromCache()
+                        if (lastKnownLocation != null) {
+                            takePictureWithLocation(
+                                lastKnownLocation.latitude,
+                                lastKnownLocation.longitude,
+                                lastKnownLocation.altitude
+                            )
+                        } else {
+                            showToast("Gagal mendapatkan lokasi")
+                        }
                     }
                 }
                 .addOnFailureListener { e ->
+                    // Gagal mendapatkan lokasi
                     showToast("Failed to retrieve location: ${e.message}")
+                    val lastKnownLocation = getLastKnownLocationFromCache()
+                    if (lastKnownLocation != null) {
+                        takePictureWithLocation(
+                            lastKnownLocation.latitude,
+                            lastKnownLocation.longitude,
+                            lastKnownLocation.altitude
+                        )
+                    } else {
+                        showToast("Failed to retrieve last known location")
+                    }
                 }
         } else {
+            // Permission not granted, request the permission from the user
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
-//    private fun getLocation() {
-//        val fusedLocationClient: FusedLocationProviderClient =
-//            LocationServices.getFusedLocationProviderClient(requireActivity())
-//
-//        if (ContextCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            // Permission granted, proceed to fetch the last known location
-//            fusedLocationClient.lastLocation
-//                .addOnSuccessListener { location: Location? ->
-//                    // Handle the location result
-//                    if (location != null) {
-//                        val latitude = location.latitude
-//                        val longitude = location.longitude
-//                        val elevation = location.altitude
-//
-//                        // Proceed with image capture and saving
-//                        takePictureWithLocation(latitude, longitude, elevation)
-//                    } else {
-//                        // Handle case where location is null
-//                        showToast("Gagal mendapatkan lokasi. Menggunakan data lokasi terakhir diketahui.")
-//                        val lastKnownLocation = getLastKnownLocationFromCache()
-//                        if (lastKnownLocation != null) {
-//                            takePictureWithLocation(
-//                                lastKnownLocation.latitude,
-//                                lastKnownLocation.longitude,
-//                                lastKnownLocation.altitude
-//                            )
-//                        } else {
-//                            showToast("Gagal mendapatkan lokasi")
-//                        }
-//                    }
-//                }
-//            .addOnFailureListener { e ->
-//                // Gagal mendapatkan lokasi
-//                showToast("Failed to retrieve location: ${e.message}")
-//                val lastKnownLocation = getLastKnownLocationFromCache()
-//                if (lastKnownLocation != null) {
-//                    takePictureWithLocation(
-//                        lastKnownLocation.latitude,
-//                        lastKnownLocation.longitude,
-//                        lastKnownLocation.altitude
-//                    )
-//                } else {
-//                    showToast("Failed to retrieve last known location")
-//                }
-//            }
-//        } else {
-//            // Permission not granted, request the permission from the user
-//            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//        }
-//    }
-//
-//    private fun getLastKnownLocationFromCache(): Location? {
-//        // Retrieve last known location from cache
-//        // Example: Use SharedPreferences or local database to store last known location
-//        // Return the last known location, or null if not available
-//        // Example:
-//        val sharedPreferences = requireContext().getSharedPreferences("LocationCache", Context.MODE_PRIVATE)
-//        val latitude = sharedPreferences.getFloat("lastLatitude", 0.0f).toDouble()
-//        val longitude = sharedPreferences.getFloat("lastLongitude", 0.0f).toDouble()
-//        val elevation = sharedPreferences.getFloat("lastElevation", 0.0f).toDouble()
-//
-//        return if (latitude != 0.0 && longitude != 0.0) {
-//            Location("").apply {
-//                this.latitude = latitude
-//                this.longitude = longitude
-//                this.altitude = elevation
-//            }
-//        } else {
-//            null
-//        }
-//    }
-    private fun showQRScannerWithLocation(latitude: Double, longitude: Double, elevation: Double) {
+    private fun scanQRCode(latitude: Double, longitude: Double, elevation: Double) {
         val integrator = IntentIntegrator.forSupportFragment(this)
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-        integrator.setPrompt("Scan a QR Code")
-        integrator.setCameraId(0)  // Use the back camera
-        integrator.setOrientationLocked(false)
-        integrator.setBeepEnabled(true)
-        integrator.setBarcodeImageEnabled(true)
+        integrator.setPrompt("Scan QR Code")
+        integrator.setCameraId(0)
+        integrator.setBeepEnabled(false)
         integrator.initiateScan()
+        val bundle = Bundle().apply {
+            putDouble("latitude", latitude)
+            putDouble("longitude", longitude)
+            putDouble("elevation", elevation)
+        }
+        showFragment(bundle)
     }
 
-//    private fun takePictureWithLocation(latitude: Double, longitude: Double, elevation: Double) {
-//        val imageCapture = imageCapture ?: return
-//        val photoFile = createCustomTempFile(requireActivity())
-//        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-//
-//        imageCapture.takePicture(
-//            outputOptions,
-//            ContextCompat.getMainExecutor(requireActivity()),
-//            object : ImageCapture.OnImageSavedCallback {
-//                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-//                    val imageUri = output.savedUri ?: Uri.fromFile(photoFile)
-//
-//                    // Simpan gambar bersama dengan data lokasi
-//                    val bundle = Bundle().apply {
-//                        putString(SaveFragment.EXTRA_FILE, imageUri.toString())
-//                        putDouble("latitude", latitude)
-//                        putDouble("longitude", longitude)
-//                        putDouble("elevation", elevation)
-//                    }
-//                    showFragment(bundle)
-//                }
-//
-//                override fun onError(exc: ImageCaptureException) {
-//                    showToast("Failed to capture image")
-//                    Log.e(TAG, "onError: ${exc.message}")
-//                }
-//            }
-//        )
-//    }
+    private fun getLastKnownLocationFromCache(): Location? {
+        // Retrieve last known location from cache
+        // Example: Use SharedPreferences or local database to store last known location
+        // Return the last known location, or null if not available
+        // Example:
+        val sharedPreferences = requireContext().getSharedPreferences("LocationCache", Context.MODE_PRIVATE)
+        val latitude = sharedPreferences.getFloat("lastLatitude", 0.0f).toDouble()
+        val longitude = sharedPreferences.getFloat("lastLongitude", 0.0f).toDouble()
+        val elevation = sharedPreferences.getFloat("lastElevation", 0.0f).toDouble()
+
+        return if (latitude != 0.0 && longitude != 0.0) {
+            Location("").apply {
+                this.latitude = latitude
+                this.longitude = longitude
+                this.altitude = elevation
+            }
+        } else {
+            null
+        }
+    }
+
+    private fun takePictureWithLocation(latitude: Double, longitude: Double, elevation: Double) {
+        val imageCapture = imageCapture ?: return
+        val photoFile = createCustomTempFile(requireActivity())
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+        imageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(requireActivity()),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    val imageUri = output.savedUri ?: Uri.fromFile(photoFile)
+                    readQRCode(imageUri)
+
+                    // Simpan gambar bersama dengan data lokasi
+                    val bundle = Bundle().apply {
+                        putString(SaveFragment.EXTRA_FILE, imageUri.toString())
+                        putDouble("latitude", latitude)
+                        putDouble("longitude", longitude)
+                        putDouble("elevation", elevation)
+                    }
+                    showFragment(bundle)
+                }
+
+                override fun onError(exc: ImageCaptureException) {
+                    showToast("Failed to capture image")
+                    Log.e(TAG, "onError: ${exc.message}")
+                }
+            }
+        )
+    }
+
+    private fun readQRCode(imageUri: Uri) {
+        val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+        val intArray = IntArray(bitmap.width * bitmap.height)
+        bitmap.getPixels(intArray, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+        val source = RGBLuminanceSource(bitmap.width, bitmap.height, intArray)
+        val binaryBitmap = BinaryBitmap(HybridBinarizer(source))
+
+        try {
+            val result = MultiFormatReader().decode(binaryBitmap)
+            handleQRCodeResult(result.text)
+        } catch (e: NotFoundException) {
+            showToast("QR Code not found")
+        }
+    }
+
+    private fun handleQRCodeResult(qrCodeData: String) {
+        // Lakukan sesuatu dengan data QR code yang telah dibaca
+        Toast.makeText(requireContext(), "QR Code: $qrCodeData", Toast.LENGTH_LONG).show()
+    }
+
     fun showFragment(bundle: Bundle) {
         val saveFragment = SaveFragment()
         saveFragment.arguments = bundle
@@ -322,51 +295,35 @@ class CameraFragment() : Fragment() {
             .navigate(R.id.action_navigation_camera_to_navigation_save, bundle)
     }
 
-//    private val orientationEventListener by lazy {
-//        object : OrientationEventListener(requireActivity()) {
-//            override fun onOrientationChanged(orientation: Int) {
-//                if (orientation == ORIENTATION_UNKNOWN) {
-//                    return
-//                }
-//
-//                val rotation = when (orientation) {
-//                    in 45 until 135 -> Surface.ROTATION_270
-//                    in 135 until 225 -> Surface.ROTATION_180
-//                    in 225 until 315 -> Surface.ROTATION_90
-//                    else -> Surface.ROTATION_0
-//                }
-//
-//                imageCapture?.targetRotation = rotation
-//            }
-//        }
-//    }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        orientationEventListener.enable()
-//    }
-//
-//    override fun onStop() {
-//        super.onStop()
-//        orientationEventListener.disable()
-//    }
+    private val orientationEventListener by lazy {
+        object : OrientationEventListener(requireActivity()) {
+            override fun onOrientationChanged(orientation: Int) {
+                if (orientation == ORIENTATION_UNKNOWN) {
+                    return
+                }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents == null) {
-                showToast("Cancelled")
-            } else {
-                showToast("Scanned: " + result.contents)
-                // Handle the scanned result here
-                // Misalnya, tampilkan hasil pemindaian QR Code di sini atau lakukan operasi lainnya
+                val rotation = when (orientation) {
+                    in 45 until 135 -> Surface.ROTATION_270
+                    in 135 until 225 -> Surface.ROTATION_180
+                    in 225 until 315 -> Surface.ROTATION_90
+                    else -> Surface.ROTATION_0
+                }
+
+                imageCapture?.targetRotation = rotation
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        orientationEventListener.enable()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        orientationEventListener.disable()
+    }
+
     private fun hideSystemUI(activity: Activity) {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
